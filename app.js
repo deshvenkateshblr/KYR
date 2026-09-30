@@ -115,6 +115,9 @@ function render(savedData = null) {
   otherHeader.innerHTML = `<div class="group-title">3. Other Pitrugalu</div>`;
   content.appendChild(otherHeader);
 
+  const tableWrapper = document.createElement('div');
+  tableWrapper.className = 'table-responsive';
+  
   const table = document.createElement('table');
   table.className = 'other-table';
   table.innerHTML = `
@@ -130,7 +133,8 @@ function render(savedData = null) {
     </thead>
     <tbody id="other-tbody"></tbody>
   `;
-  content.appendChild(table);
+  tableWrapper.appendChild(table);
+  content.appendChild(tableWrapper);
 
   const tbody = document.getElementById('other-tbody');
 

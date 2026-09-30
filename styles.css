@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --primary: #8B4513;
   --bg: #fdf6e3;
   --card: #fffdf8;
@@ -321,6 +321,7 @@ input[type="text"]:focus {
 
 .other-table input[type="text"] {
   width: 100%;
+  min-width: 90px;
   padding: 6px 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -347,27 +348,117 @@ input[type="text"]:focus {
   accent-color: var(--primary);
 }
 
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (max-width: 700px) {
+  .table-responsive {
+    overflow-x: visible; /* Disable horizontal scroll wrapper on mobile */
+  }
+  
   .other-table {
+    min-width: 100%;
+    border: none;
+    background: transparent;
+  }
+  
+  .other-table thead {
+    display: none; /* Hide headers */
+  }
+  
+  .other-table, .other-table tbody, .other-table tr, .other-table td {
     display: block;
-    overflow-x: auto;
+    width: 100%;
+  }
+  
+  .other-table tr {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 12px;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+  
+  .other-table td {
+    border-bottom: none;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Order Badge (Absolute Positioned) */
+  .other-table td:nth-child(1) {
+    position: absolute;
+    top: 16px;
+    left: 12px;
+    padding: 0;
+    width: auto;
+  }
+  
+  /* Relation Name (Indented next to Order Badge) */
+  .other-table td:nth-child(2) {
+    display: block;
+    padding-left: 45px;
+    min-height: 40px;
+    margin-bottom: 8px;
+  }
+  
+  /* Inline Labels for Inputs */
+  .other-table td:nth-child(3)::before {
+    content: "Gotra:";
+    font-weight: 600;
+    width: 80px;
+    flex-shrink: 0;
+    color: #555;
+    font-size: 0.85rem;
+  }
+  
+  .other-table td:nth-child(4)::before {
+    content: "Name:";
+    font-weight: 600;
+    width: 80px;
+    flex-shrink: 0;
+    color: #555;
+    font-size: 0.85rem;
+  }
+  
+  .other-table td:nth-child(5)::before {
+    content: "Include:";
+    font-weight: 600;
+    width: 80px;
+    flex-shrink: 0;
+    color: #555;
+    font-size: 0.85rem;
+  }
+  
+  /* Action Button Row */
+  .other-table td:nth-child(6) {
+    justify-content: flex-end;
+    margin-top: 10px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
   }
 }
 /* Table Layout Utility Classes */
 .col-order {
-  width: 80px;
+  min-width: 60px;
 }
 
 .col-gotra {
-  width: 150px;
+  min-width: 100px;
 }
 
 .col-name {
-  width: 180px;
+  min-width: 120px;
 }
 
 .col-include {
-  width: 70px;
+  min-width: 60px;
 }
 
 .text-muted {
