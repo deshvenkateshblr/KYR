@@ -14,37 +14,47 @@ function showStatus(msg, type) {
   setTimeout(() => statusEl.className = 'status', 2500); // Reset class instead of display:none
 }
 
-// ========== ADD / REMOVE ==========
-function addAnother(baseOrder) {
-  const currentData = collectData();
+function insertRowAfter(base, currentDisplayOrder) {
+  let currentData = collectData();
   
-  if (!extraCounts[baseOrder]) {
-    extraCounts[baseOrder] = 1;
-  } else {
-    extraCounts[baseOrder]++;
-  }
-
+  const index = currentData.findIndex(item => String(item.order) === String(currentDisplayOrder));
+  if (index === -1) return;
+  
+  const blankRow = {
+    order: 'temp',
+    name: '',
+    gotra: currentData[index].gotra,
+    include: true
+  };
+  
+  currentData.splice(index + 1, 0, blankRow);
+  
+  let counter = 0;
+  currentData.forEach(item => {
+    if (item === blankRow || String(item.order) === String(base) || String(item.order).startsWith(base + '-')) {
+      item.order = counter === 0 ? base : base + '-' + (counter + 1);
+      counter++;
+    }
+  });
+  
+  extraCounts[base] = (extraCounts[base] || 0) + 1;
+  
   render(currentData);
   if (typeof autoSave === 'function') autoSave();
-  showStatus('Added another entry', 'success');
+  showStatus('Inserted new entry', 'success');
 }
 
 function removeRow(base, displayOrder) {
   let currentData = collectData();
   
-  // 1. Remove the targeted row
   currentData = currentData.filter(item => String(item.order) !== String(displayOrder));
   
-  // 2. Extract remaining extra rows for this specific base
-  let extras = currentData.filter(item => String(item.order).startsWith(base + '-'));
-  
-  // 3. Filter out those extra rows from the main dataset temporarily
-  currentData = currentData.filter(item => !String(item.order).startsWith(base + '-'));
-  
-  // 4. Re-inject them with corrected sequential numbering 
-  extras.forEach((item, index) => {
-    item.order = base + '-' + (index + 2);
-    currentData.push(item);
+  let counter = 0;
+  currentData.forEach(item => {
+    if (String(item.order) === String(base) || String(item.order).startsWith(base + '-')) {
+      item.order = counter === 0 ? base : base + '-' + (counter + 1);
+      counter++;
+    }
   });
   
   extraCounts[base]--;
@@ -185,7 +195,7 @@ function render(savedData = null) {
       const isChecked = saved ? saved.include === true : false;
       const readonlyGotra = base <= 21;
 
-      createRow(tbody, base, displayOrder, rel, gotraVal, nameVal, isChecked, readonlyGotra, i === 0);
+      createRow(tbody, base, displayOrder, rel, gotraVal, nameVal, isChecked, readonlyGotra, i === 0, i === maxCount);
     }
   }
   updateTotalCount();
@@ -236,7 +246,7 @@ function renderVarga(title, gotraId, gotraValue, pairs, savedData) {
   });
 }
 
-function createRow(tbody, base, displayOrder, rel, gotraVal, nameVal, isChecked, readonlyGotra, isMainRow) {
+function createRow(tbody, base, displayOrder, rel, gotraVal, nameVal, isChecked, readonlyGotra, isMainRow, isLastRow) {
   const tr = document.createElement('tr');
   
   const disabledAttr = readonlyGotra ? 'disabled' : '';
@@ -261,9 +271,10 @@ function createRow(tbody, base, displayOrder, rel, gotraVal, nameVal, isChecked,
       <input type="checkbox" class="inc" ${checkedAttr} onchange="updateTotalCount()">
     </td>
     <td>
-      ${isMainRow 
-        ? `<button type="button" class="btn-add" onclick="addAnother(${base})">+ Add</button>` 
-        : `<button type="button" class="btn-remove" onclick="removeRow(${base}, '${displayOrder}')">- Remove</button>`}
+      <div class="action-buttons">
+        ${!isMainRow ? `<button type="button" class="btn-remove" onclick="removeRow(${base}, '${displayOrder}')">- Remove</button>` : ''}
+        <button type="button" class="btn-add" onclick="insertRowAfter(${base}, '${displayOrder}')">+ Add Another</button>
+      </div>
     </td>
   `;
 
