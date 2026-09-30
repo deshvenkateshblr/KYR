@@ -25,6 +25,7 @@ function addAnother(baseOrder) {
   }
 
   render(currentData);
+  if (typeof autoSave === 'function') autoSave();
   showStatus('Added another entry', 'success');
 }
 
@@ -48,6 +49,7 @@ function removeRow(base, displayOrder) {
   
   extraCounts[base]--;
   render(currentData);
+  if (typeof autoSave === 'function') autoSave();
   showStatus('Row removed', 'success');
 }
 
@@ -74,6 +76,10 @@ function updateTotalCount() {
   if (countEl) {
     countEl.textContent = `Total Included: ${count}`;
   }
+  // Auto-save whenever the count updates (checkboxes checked/unchecked, or typing happens)
+  if (typeof autoSave === 'function') {
+    autoSave();
+  }
 }
 
 function handleFieldInput(input) {
@@ -98,6 +104,7 @@ function handleFieldInput(input) {
 function handleNameBlur(input, gender) {
   if (input.value.trim() === '') {
     input.value = gender === 'female' ? DEFAULT_FEMALE_NAME : DEFAULT_MALE_NAME;
+    if (typeof autoSave === 'function') autoSave();
   }
 }
 
@@ -106,6 +113,7 @@ function handleGotraBlur(input) {
     input.value = DEFAULT_GOTRA;
   }
   syncGotras(); // Ensure defaults cascade down to rows 14-21
+  if (typeof autoSave === 'function') autoSave();
 }
 
 // ========== RENDER ==========
@@ -302,9 +310,14 @@ function collectData() {
   return result;
 }
 
-// ========== BUTTONS ==========
-function saveData() {
+// ========== BUTTONS & AUTOSAVE ==========
+function autoSave() {
   localStorage.setItem('pindaPradanaData', JSON.stringify(collectData()));
+}
+
+// Keeping a manual save function in case it's ever needed, but buttons are removed
+function saveData() {
+  autoSave();
   showStatus('Data saved successfully!', 'success');
 }
 
@@ -333,9 +346,12 @@ function loadData(silent = false) {
 }
 
 function resetToDefaults() {
-  extraCounts = {};
-  render(null);
-  showStatus('Reset done', 'success');
+  if (confirm("Are you sure you want to clear all data and start over?")) {
+    localStorage.removeItem('pindaPradanaData');
+    extraCounts = {};
+    render(null);
+    showStatus('All data reset', 'success');
+  }
 }
 
 // ========== START ==========
