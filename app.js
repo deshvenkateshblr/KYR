@@ -151,7 +151,7 @@ function render(savedData = null) {
       else if (saved && saved.gotra) gotraVal = saved.gotra;
 
       const nameVal = saved?.name || (rel.gender === 'female' ? DEFAULT_FEMALE_NAME : DEFAULT_MALE_NAME);
-      const isChecked = saved ? saved.include !== false : true;
+      const isChecked = saved ? saved.include === true : false;
       const readonlyGotra = base <= 21;
 
       createRow(tbody, base, displayOrder, rel, gotraVal, nameVal, isChecked, readonlyGotra, i === 0);
@@ -180,7 +180,7 @@ function renderVarga(title, gotraId, gotraValue, pairs, savedData) {
       const rel = getRel(order);
       const saved = savedData ? savedData.find(s => s.order === order) : null;
       const nameVal = saved?.name || '';
-      const isChecked = saved ? saved.include !== false : true;
+      const isChecked = saved ? saved.include === true : false;
 
       const person = document.createElement('div');
       person.className = 'person';
