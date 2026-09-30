@@ -111,10 +111,23 @@ function handleFieldInput(input) {
   }
 }
 
+function handleNameFocus(input, gender) {
+  const defName = gender === 'female' ? DEFAULT_FEMALE_NAME : DEFAULT_MALE_NAME;
+  if (input.value.trim() === defName) {
+    input.value = '';
+  }
+}
+
 function handleNameBlur(input, gender) {
   if (input.value.trim() === '') {
     input.value = gender === 'female' ? DEFAULT_FEMALE_NAME : DEFAULT_MALE_NAME;
     if (typeof autoSave === 'function') autoSave();
+  }
+}
+
+function handleGotraFocus(input) {
+  if (input.value.trim() === DEFAULT_GOTRA) {
+    input.value = '';
   }
 }
 
@@ -208,7 +221,7 @@ function renderVarga(title, gotraId, gotraValue, pairs, savedData) {
     <div class="group-title">${title}</div>
     <div class="group-gotra">
       <label>Gotra:</label>
-      <input type="text" id="${gotraId}" value="${gotraValue}" oninput="syncGotras()" onblur="handleGotraBlur(this)">
+      <input type="text" id="${gotraId}" value="${gotraValue}" oninput="syncGotras()" onfocus="handleGotraFocus(this)" onblur="handleGotraBlur(this)">
     </div>
   `;
   content.appendChild(header);
@@ -235,7 +248,7 @@ function renderVarga(title, gotraId, gotraValue, pairs, savedData) {
           <div class="k">${rel.kannada}</div>
           <div class="s">${rel.sanskrit} • ${rel.english}</div>
         </div>
-        <input type="text" class="name-input" value="${nameVal}" placeholder="Name" oninput="handleFieldInput(this)" onblur="handleNameBlur(this, '${rel.gender}')">
+        <input type="text" class="name-input" value="${nameVal}" placeholder="Name" onfocus="handleNameFocus(this, '${rel.gender}')" oninput="handleFieldInput(this)" onblur="handleNameBlur(this, '${rel.gender}')">
         <input type="checkbox" class="inc" ${checkedAttr} onchange="updateTotalCount()">
       `;
       pairDiv.appendChild(person);
@@ -262,10 +275,10 @@ function createRow(tbody, base, displayOrder, rel, gotraVal, nameVal, isChecked,
       <small class="text-muted">${rel.sanskrit} • ${rel.english}</small>
     </td>
     <td>
-      <input type="text" class="person-gotra" value="${gotraVal}" ${disabledAttr} oninput="handleFieldInput(this)" onblur="handleGotraBlur(this)">
+      <input type="text" class="person-gotra" value="${gotraVal}" ${disabledAttr} onfocus="handleGotraFocus(this)" oninput="handleFieldInput(this)" onblur="handleGotraBlur(this)">
     </td>
     <td>
-      <input type="text" class="name-input" value="${nameVal}" oninput="handleFieldInput(this)" onblur="handleNameBlur(this, '${rel.gender}')">
+      <input type="text" class="name-input" value="${nameVal}" onfocus="handleNameFocus(this, '${rel.gender}')" oninput="handleFieldInput(this)" onblur="handleNameBlur(this, '${rel.gender}')">
     </td>
     <td class="text-center">
       <input type="checkbox" class="inc" ${checkedAttr} onchange="updateTotalCount()">
