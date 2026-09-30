@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="app.js" />
+    <File Path="data_entry.html" />
+    <File Path="index.html" />
+    <File Path="relations.js" />
+    <File Path="sequence.html" />
+    <File Path="sequence.js" />
+    <File Path="styles.css" />
+    <File Path="vfs_fonts.js" />
+  </Folder>
+</Solution>

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pinda Pradana - Sequence</title>
+        <link rel="stylesheet" href="styles.css">
+</head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Pinda Pradana - Sequence Display</h1>
+        <a href="data_entry.html" class="nav-link">← Back to Data Entry</a>
+      </header>
+
+      <div id="no-data" class="status error" style="display: none;">No saved data found. Please save Data Entry first.</div>
+
+      <div id="carousel-container" style="display: none;">
+        <div class="carousel-progress" id="progress-text">Person 1 of X</div>
+
+        <div class="carousel-card" id="touch-card">
+          <div class="card-order" id="card-order">Order: 1</div>
+          <div class="card-relation">
+            <h2 id="card-kannada">ಪಿತೃ / ತಂದೆ</h2>
+            <div class="card-english" id="card-english">Father</div>
+          </div>
+          <div class="card-details">
+            <div class="detail-row">
+              <span class="detail-label">Gotra</span>
+              <span class="detail-value" id="card-gotra">Kashyapa</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Name</span>
+              <span class="detail-value" id="card-name">Yajnyappa</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-controls">
+          <button class="btn-secondary" id="btn-prev" onclick="prevSlide()">
+            <strong style="font-size: 1.2em; line-height: 1;">&larr;</strong> Previous
+          </button>
+          <button class="btn-primary" id="btn-next" onclick="nextSlide()">
+            Next <strong style="font-size: 1.2em; line-height: 1;">&rarr;</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="relations.js"></script>
+    <script src="sequence.js"></script>
+  </body>
+</html>

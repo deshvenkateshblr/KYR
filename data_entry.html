@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pinda Pradana - Data Entry</title>
+        <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Pinda Pradana - Data Entry</h1>
+        <p class="subtitle">Simple & Reliable Version</p>
+      </header>
+
+      <div class="controls">
+        <button class="btn-primary" onclick="saveData()">Save All</button>
+        <button class="btn-secondary" onclick="loadData()">Load Saved</button>
+        <button class="btn-secondary" onclick="resetToDefaults()">Reset Defaults</button>
+        <button class="btn-primary" onclick="generatePDF()">Save as PDF</button>
+        <button class="btn-primary" onclick="window.location.href='sequence.html'">Start Sequence Viewer</button>
+        <div id="total-count" class="total-badge">Total Included: 0</div>
+      </div>
+
+      <div id="content"></div>
+      <div id="status" class="status"></div>
+    </div>
+
+    <script src="relations.js"></script>
+
+    <!-- PDFMake Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="vfs_fonts.js"></script>
+
+    <script src="app.js"></script>
+  </body>
+</html>
