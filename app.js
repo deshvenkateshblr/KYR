@@ -76,6 +76,25 @@ function updateTotalCount() {
   }
 }
 
+function handleFieldInput(input) {
+  const container = input.closest('.person, tr');
+  if (container) {
+    const checkbox = container.querySelector('.inc');
+    if (!checkbox) return;
+
+    if (input.classList.contains('name-input')) {
+      // For Name: Check if typing, uncheck if cleared completely
+      checkbox.checked = (input.value.trim() !== '');
+    } else if (input.classList.contains('person-gotra')) {
+      // For Gotra: Check if typing (don't auto-uncheck if they just clear Gotra to change it)
+      if (input.value.trim() !== '') {
+        checkbox.checked = true;
+      }
+    }
+    updateTotalCount();
+  }
+}
+
 function handleNameBlur(input, gender) {
   if (input.value.trim() === '') {
     input.value = gender === 'female' ? DEFAULT_FEMALE_NAME : DEFAULT_MALE_NAME;
@@ -198,7 +217,7 @@ function renderVarga(title, gotraId, gotraValue, pairs, savedData) {
           <div class="k">${rel.kannada}</div>
           <div class="s">${rel.sanskrit} • ${rel.english}</div>
         </div>
-        <input type="text" class="name-input" value="${nameVal}" placeholder="Name" onblur="handleNameBlur(this, '${rel.gender}')">
+        <input type="text" class="name-input" value="${nameVal}" placeholder="Name" oninput="handleFieldInput(this)" onblur="handleNameBlur(this, '${rel.gender}')">
         <input type="checkbox" class="inc" ${checkedAttr} onchange="updateTotalCount()">
       `;
       pairDiv.appendChild(person);
@@ -225,10 +244,10 @@ function createRow(tbody, base, displayOrder, rel, gotraVal, nameVal, isChecked,
       <small class="text-muted">${rel.sanskrit} • ${rel.english}</small>
     </td>
     <td>
-      <input type="text" class="person-gotra" value="${gotraVal}" ${disabledAttr} onblur="handleGotraBlur(this)">
+      <input type="text" class="person-gotra" value="${gotraVal}" ${disabledAttr} oninput="handleFieldInput(this)" onblur="handleGotraBlur(this)">
     </td>
     <td>
-      <input type="text" class="name-input" value="${nameVal}" onblur="handleNameBlur(this, '${rel.gender}')">
+      <input type="text" class="name-input" value="${nameVal}" oninput="handleFieldInput(this)" onblur="handleNameBlur(this, '${rel.gender}')">
     </td>
     <td class="text-center">
       <input type="checkbox" class="inc" ${checkedAttr} onchange="updateTotalCount()">
