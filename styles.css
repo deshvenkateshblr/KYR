@@ -735,4 +735,25 @@ input[type="text"]:focus {
   .ritual-grid {
     grid-template-columns: 1fr;
   }
+
+  .card-details {
+    text-align: center;
+  }
+
+  .detail-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+
+  .detail-row:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .detail-value {
+    font-size: 1.8rem;
+  }
 }
